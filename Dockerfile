@@ -1,6 +1,6 @@
 ARG PLATFORM=$BUILDPLATFORM
 
-FROM --platform=$PLATFORM ghcr.io/rbtying/shengji-build-image:latest as wasmbase
+FROM --platform=$PLATFORM ghcr.io/arunsrinivas20/shengji-build-image:latest as wasmbase
 
 # Create a workspace recipe.json to pre-fetch and pre-compile dependencies
 FROM wasmbase as planner

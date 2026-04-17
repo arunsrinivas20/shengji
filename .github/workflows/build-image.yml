@@ -38,6 +38,6 @@ jobs:
           context: ./build-image
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/rbtying/shengji-build-image:latest
-          cache-from: type=registry,ref=ghcr.io/rbtying/shengji-build-image:buildcache
-          cache-to: type=registry,ref=ghcr.io/rbtying/shengji-build-image:buildcache,mode=max
+          tags: ghcr.io/arunsrinivas20/shengji-build-image:latest
+          cache-from: type=registry,ref=ghcr.io/arunsrinivas20/shengji-build-image:buildcache
+          cache-to: type=registry,ref=ghcr.io/arunsrinivas20/shengji-build-image:buildcache,mode=max
