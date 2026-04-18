@@ -1,0 +1,23 @@
+name: Sync with rbtying/shengji master
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+          token: ${{ secrets.SYNC_TOKEN }}
+
+      - name: Sync
+        run: |
+          git remote add upstream https://github.com/rbtying/shengji.git
+          git fetch upstream master
+          git reset --hard upstream/master
+          git push -f origin master
