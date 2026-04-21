@@ -30,11 +30,11 @@ crate::impl_slog_value!(JokerBidPolicy);
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Serialize, Deserialize, JsonSchema, Default)]
 pub enum BidReinforcementPolicy {
     /// A bid can be reinforced when it is the winning bid.
-    #[default]
     ReinforceWhileWinning,
     /// A bid can be reinforced when it is the winning bid, or overturned with a greater bid.
     OverturnOrReinforceWhileWinning,
     /// A bid can be reinforced if it is equivalent to the winning bid after reinforcement.
+    #[default]
     ReinforceWhileEquivalent,
 }
 

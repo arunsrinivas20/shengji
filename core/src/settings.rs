@@ -99,8 +99,8 @@ shengji_mechanics::impl_slog_value!(ThrowPenalty);
 
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Serialize, Deserialize, JsonSchema, Default)]
 pub enum KittyPenalty {
-    #[default]
     Times,
+    #[default]
     Power,
 }
 
@@ -147,8 +147,8 @@ shengji_mechanics::impl_slog_value!(FirstLandlordSelectionPolicy);
 
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Serialize, Deserialize, JsonSchema, Default)]
 pub enum KittyBidPolicy {
-    #[default]
     FirstCard,
+    #[default]
     FirstCardOfLevelOrHighest,
 }
 
@@ -200,11 +200,30 @@ pub enum GameVisibility {
 shengji_mechanics::impl_slog_value!(GameVisibility);
 
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Serialize, Deserialize, JsonSchema)]
+pub struct DefaultTrue(pub bool);
+
+impl Default for DefaultTrue {
+    fn default() -> Self {
+        DefaultTrue(true)
+    }
+}
+impl Deref for DefaultTrue {
+    type Target = bool;
+
+    fn deref(&self) -> &bool {
+        &self.0
+    }
+}
+
+shengji_mechanics::impl_slog_value!(DefaultTrue);
+
+
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Serialize, Deserialize, JsonSchema)]
 pub struct MaxRank(Rank);
 shengji_mechanics::impl_slog_value!(MaxRank);
 impl Default for MaxRank {
     fn default() -> Self {
-        MaxRank(Rank::NoTrump)
+        MaxRank(Rank::Number(Number::Ace))
     }
 }
 impl Deref for MaxRank {
@@ -217,8 +236,8 @@ impl Deref for MaxRank {
 
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Serialize, Deserialize, JsonSchema, Default, KV)]
 pub enum BackToTwoSetting {
-    #[default]
     Disabled,
+    #[default]
     SingleJack,
 }
 
@@ -258,7 +277,7 @@ pub struct PropagatedState {
 
     pub(crate) game_mode: GameModeSettings,
     #[serde(default)]
-    pub(crate) hide_landlord_points: bool,
+    pub(crate) hide_landlord_points: DefaultTrue,
     pub(crate) kitty_size: Option<usize>,
     #[serde(default)]
     pub(crate) friend_selection_policy: FriendSelectionPolicy,
@@ -279,7 +298,7 @@ pub struct PropagatedState {
     #[serde(default)]
     pub(crate) throw_penalty: ThrowPenalty,
     #[serde(default)]
-    pub(crate) hide_played_cards: bool,
+    pub(crate) hide_played_cards: DefaultTrue,
     #[serde(default)]
     pub(crate) kitty_bid_policy: KittyBidPolicy,
     #[serde(default)]
@@ -297,7 +316,7 @@ pub struct PropagatedState {
     #[serde(default)]
     pub(crate) joker_bid_policy: JokerBidPolicy,
     #[serde(default)]
-    pub(crate) should_reveal_kitty_at_end_of_game: bool,
+    pub(crate) should_reveal_kitty_at_end_of_game: DefaultTrue,
     #[serde(default)]
     pub(crate) play_takeback_policy: PlayTakebackPolicy,
     #[serde(default)]
@@ -607,7 +626,7 @@ impl PropagatedState {
         &mut self,
         should_reveal: bool,
     ) -> Result<Vec<MessageVariant>, Error> {
-        self.should_reveal_kitty_at_end_of_game = should_reveal;
+        self.should_reveal_kitty_at_end_of_game = DefaultTrue(should_reveal);
         Ok(vec![MessageVariant::ShouldRevealKittyAtEndOfGameSet {
             should_reveal,
         }])
@@ -636,14 +655,14 @@ impl PropagatedState {
     }
 
     pub fn hide_landlord_points(&mut self, should_hide: bool) -> Result<MessageVariant, Error> {
-        self.hide_landlord_points = should_hide;
+        self.hide_landlord_points = DefaultTrue(should_hide);
         Ok(MessageVariant::SetDefendingPointVisibility {
             visible: !should_hide,
         })
     }
 
     pub fn hide_played_cards(&mut self, should_hide: bool) -> Result<MessageVariant, Error> {
-        self.hide_played_cards = should_hide;
+        self.hide_played_cards = DefaultTrue(should_hide);
         Ok(MessageVariant::SetCardVisibility {
             visible: !should_hide,
         })

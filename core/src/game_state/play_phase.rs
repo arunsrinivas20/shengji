@@ -190,7 +190,7 @@ impl PlayPhase {
             bomb_policy: self.propagated.bomb_policy,
             compound_formats: self.propagated.compound_formats.clone(),
         })?;
-        if self.propagated.hide_played_cards {
+        if *self.propagated.hide_played_cards {
             for msg in &mut msgs {
                 match msg {
                     PlayCardsMessage::PlayedCards { ref mut cards, .. } => {
@@ -316,7 +316,7 @@ impl PlayPhase {
             .collect::<Vec<_>>();
 
         if self.hands.is_empty() {
-            if self.propagated.should_reveal_kitty_at_end_of_game {
+            if *self.propagated.should_reveal_kitty_at_end_of_game {
                 msgs.push(MessageVariant::EndOfGameKittyReveal {
                     cards: self.kitty.clone(),
                 });
@@ -508,7 +508,7 @@ impl PlayPhase {
             .points
             .iter()
             .filter(|(id, _)| {
-                !self.propagated.hide_landlord_points || !self.landlords_team.contains(id)
+                !*self.propagated.hide_landlord_points || !self.landlords_team.contains(id)
             })
             .flat_map(|(_, cards)| cards)
             .flat_map(|c| c.points())
@@ -673,7 +673,7 @@ impl PlayPhase {
     }
 
     pub fn destructively_redact_for_player(&mut self, player: PlayerID) {
-        if self.propagated.hide_landlord_points {
+        if *self.propagated.hide_landlord_points {
             for (k, v) in self.points.iter_mut() {
                 if self.landlords_team.contains(k) {
                     v.clear();

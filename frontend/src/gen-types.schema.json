@@ -993,6 +993,9 @@
         }
       }
     },
+    "DefaultTrue": {
+      "type": "boolean"
+    },
     "DrawPhase": {
       "type": "object",
       "required": [
@@ -2917,7 +2920,7 @@
           ]
         },
         "bid_reinforcement_policy": {
-          "default": "ReinforceWhileWinning",
+          "default": "ReinforceWhileEquivalent",
           "allOf": [
             {
               "$ref": "#/definitions/BidReinforcementPolicy"
@@ -3012,19 +3015,27 @@
           ]
         },
         "hide_landlord_points": {
-          "default": false,
-          "type": "boolean"
+          "default": true,
+          "allOf": [
+            {
+              "$ref": "#/definitions/DefaultTrue"
+            }
+          ]
         },
         "hide_played_cards": {
-          "default": false,
-          "type": "boolean"
+          "default": true,
+          "allOf": [
+            {
+              "$ref": "#/definitions/DefaultTrue"
+            }
+          ]
         },
         "hide_throw_halting_player": {
           "default": false,
           "type": "boolean"
         },
         "jack_variation": {
-          "default": "Disabled",
+          "default": "SingleJack",
           "allOf": [
             {
               "$ref": "#/definitions/BackToTwoSetting"
@@ -3040,7 +3051,7 @@
           ]
         },
         "kitty_bid_policy": {
-          "default": "FirstCard",
+          "default": "FirstCardOfLevelOrHighest",
           "allOf": [
             {
               "$ref": "#/definitions/KittyBidPolicy"
@@ -3048,7 +3059,7 @@
           ]
         },
         "kitty_penalty": {
-          "default": "Times",
+          "default": "Power",
           "allOf": [
             {
               "$ref": "#/definitions/KittyPenalty"
@@ -3083,7 +3094,7 @@
           "minimum": 0.0
         },
         "max_rank": {
-          "default": "NT",
+          "default": "A",
           "allOf": [
             {
               "$ref": "#/definitions/MaxRank"
@@ -3130,8 +3141,12 @@
           }
         },
         "should_reveal_kitty_at_end_of_game": {
-          "default": false,
-          "type": "boolean"
+          "default": true,
+          "allOf": [
+            {
+              "$ref": "#/definitions/DefaultTrue"
+            }
+          ]
         },
         "special_decks": {
           "default": [],
@@ -3141,7 +3156,7 @@
           }
         },
         "throw_evaluation_policy": {
-          "default": "All",
+          "default": "TrickUnitLength",
           "allOf": [
             {
               "$ref": "#/definitions/ThrowEvaluationPolicy"
@@ -3168,7 +3183,7 @@
           ]
         },
         "trick_draw_policy": {
-          "default": "NoProtections",
+          "default": "LongerTuplesProtected",
           "allOf": [
             {
               "$ref": "#/definitions/TrickDrawPolicy"
